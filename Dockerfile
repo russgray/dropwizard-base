@@ -1,12 +1,13 @@
 FROM java:8-jre
 
 RUN \
-    apt-get update \
-    && apt-get -y install curl build-essential unzip \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    apt-get update && \
+    apt-get -y install curl build-essential unzip
 
 ENV LIBSODIUM_VERSION 1.0.10
+ENV GLOWROOT_VERSION 0.9.1
 
+# build libsodium
 RUN \
     mkdir -p /tmpbuild/libsodium && \
     cd /tmpbuild/libsodium && \
@@ -16,7 +17,19 @@ RUN \
     ./configure && \
     make && make check && \
     make install && \
-    mv src/libsodium /usr/local/ && \
-    rm -Rf /tmpbuild/
+    mv src/libsodium /usr/local/
 
-RUN apt-get clean
+# grab glowroot and put it in a known place
+RUN \
+    mkdir -p /tmpbuild/glowroot && \
+    cd /tmpbuild/glowroot && \
+    curl -L https://github.com/glowroot/glowroot/releases/download/v$GLOWROOT_VERSION/glowroot-$GLOWROOT_VERSION-dist.zip -o glowroot-$GLOWROOT_VERSION-dist.zip && \
+    unzip -j glowroot-$GLOWROOT_VERSION-dist.zip glowroot/glowroot.jar && \
+    mkdir -p /opt/glowroot && \
+    mv glowroot.jar /opt/glowroot/
+
+# clean up
+RUN \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    rm -Rf /tmpbuild/
