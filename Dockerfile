@@ -4,8 +4,8 @@ RUN \
     apt-get update && \
     apt-get -y install curl build-essential unzip
 
-ENV LIBSODIUM_VERSION 1.0.11
-ENV GLOWROOT_VERSION 0.9.7
+ENV LIBSODIUM_VERSION 1.0.13
+ENV GLOWROOT_VERSION 0.9.24
 
 # build libsodium
 RUN \
