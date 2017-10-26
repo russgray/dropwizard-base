@@ -1,8 +1,8 @@
-FROM java:8-jre
+FROM openjdk:8-jre-slim
 
 RUN \
     apt-get update && \
-    apt-get -y install curl build-essential unzip
+    apt-get -y install curl binutils gcc autoconf make unzip
 
 ENV LIBSODIUM_VERSION 1.0.13
 ENV GLOWROOT_VERSION 0.9.24
@@ -16,8 +16,7 @@ RUN \
     cd /tmpbuild/libsodium/libsodium-$LIBSODIUM_VERSION/ && \
     ./configure && \
     make && make check && \
-    make install && \
-    mv src/libsodium /usr/local/
+    make install
 
 # grab glowroot and put it in a known place
 RUN \
@@ -30,6 +29,7 @@ RUN \
 
 # clean up
 RUN \
+    apt-get remove curl binutils gcc autoconf make unzip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     rm -Rf /tmpbuild/
