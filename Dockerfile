@@ -23,9 +23,7 @@ RUN \
     mkdir -p /tmpbuild/glowroot && \
     cd /tmpbuild/glowroot && \
     curl -L -s https://github.com/glowroot/glowroot/releases/download/v$GLOWROOT_VERSION/glowroot-$GLOWROOT_VERSION-dist.zip -o glowroot-$GLOWROOT_VERSION-dist.zip && \
-    unzip -j glowroot-$GLOWROOT_VERSION-dist.zip glowroot/glowroot.jar && \
-    mkdir -p /opt/glowroot && \
-    mv glowroot.jar /opt/glowroot/
+    unzip glowroot-$GLOWROOT_VERSION-dist.zip -d /opt
 
 # clean up
 RUN \
