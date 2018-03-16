@@ -1,11 +1,11 @@
-FROM java:8-jre
+FROM java:8-jdk
 
 RUN \
     apt-get update && \
     apt-get -y install curl build-essential unzip
 
-ENV LIBSODIUM_VERSION 1.0.11
-ENV GLOWROOT_VERSION 0.9.7
+ENV LIBSODIUM_VERSION 1.0.16
+ENV GLOWROOT_VERSION 0.10.5
 
 # build libsodium
 RUN \
